@@ -12,7 +12,18 @@ nr_numbers = int(input(f"How many numbers would you like?\n"))
 
 #Eazy Level - Order not randomised:
 #e.g. 4 letter, 2 symbol, 2 number = JduE&!91
-random.sample()
+letter = random.sample(letters, nr_letters)
+symbol = random.sample(numbers, nr_numbers)
+number = random.sample(symbols, nr_numbers)
+
+print('Generate Password')
+password = ''.join(letter + symbol + number)
+print(f'{password}\n')
+
 
 #Hard Level - Order of characters randomised:
 #e.g. 4 letter, 2 symbol, 2 number = g^2jk8&P
+
+print('Randomize Password')
+random_password = random.sample(password, len(password))
+print(''.join(random_password))
