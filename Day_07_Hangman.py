@@ -90,11 +90,6 @@ while game_is_on and lives > 0:
           display_word[index] = letter
           letter_list.remove(letter)
     
-    #kani mo add ug guessed words na naremove sa enumaratoin. goal pud ani is to show list sa taas the na guess na
-    for letter in letter_list:
-      if letter:
-        letter_list.append(letter)
-      
     # letter_list = [letter for letter in letter_list if letter != guess]
             
   else:
@@ -113,7 +108,6 @@ while game_is_on and lives > 0:
 if lives <= 0:
   print("Game Over!")
   print(f'Right word: {hidden_word}')
-
 
 
 
