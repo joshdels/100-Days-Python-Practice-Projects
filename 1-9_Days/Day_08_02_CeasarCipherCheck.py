@@ -56,7 +56,7 @@ def decrypt(encrypted_word, reshift):
 # bottom finalss
 
 if direction == 'encode':
-    qencrypted_word = encode(text, shift)
+    encrypted_word = encode(text, shift)
 
 elif direction == 'decode':
     reshift = int(input("Type the reshift number:\n"))
