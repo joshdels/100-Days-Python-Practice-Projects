@@ -4,6 +4,7 @@ text = input("Type your message:\n").lower()
 shift = int(input("Type the shift number:\n"))
 
 
+
 index_list = []
 index_encrypted = []
 decrypted_list = []
@@ -52,7 +53,8 @@ def decrypt(encrypted_word, reshift):
     
     return decrypted_word
 
-# bottom finals
+# bottom finalss
+
 if direction == 'encode':
     qencrypted_word = encode(text, shift)
 
