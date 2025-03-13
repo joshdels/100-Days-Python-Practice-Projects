@@ -5,4 +5,4 @@ def life_in_weeks(age):
 
 
 # Call your function with hard coded values
-life_in_weeks(89)
+life_in_weeks(1)
