@@ -4,15 +4,21 @@ from art import logo
 game_on = True
 
 def diff():
-    difficulty = input("Choose a difficulty. Type 'easy' or 'hard': ")
-    attempts = 0
-    if difficulty == 'hard':
-        attempts += 5
-        return attempts
-    elif difficulty == 'easy':
-        attempts += 10
-        return attempts
-        
+    '''for choosing your difficulty, easy = 10 attempts, hard = 5 attempts'''
+    still_going = True
+    
+    while still_going:
+        attempts = 0
+        difficulty = input("Choose a difficulty. Type 'easy' or 'hard': ")
+        if difficulty == 'hard':
+            attempts += 5
+            still_going = False
+            return attempts
+        elif difficulty == 'easy':
+            attempts += 10
+            still_going = False
+            return attempts
+            
 # selecting the number
 def random_number():
     '''Chooses the random Number'''
@@ -30,13 +36,11 @@ def checking_number(number, random_num):
     elif number < random_num:
         print("Too Low")
         return False  
- 
-# game_start 
 
 def game():
     '''This will start the guessing game'''
     print(logo)
-    print("Welcome to the Number Guessing Game!\n I'm thinking of a number between 1 and 100: ")
+    print("Welcome to the Number Guessing Game!\nI'm thinking of a number between 1 and 100: ")
     ran_num = random_number()
 
     attempts = diff()
