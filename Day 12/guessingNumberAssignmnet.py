@@ -68,4 +68,4 @@ while game_on:
         print("Please enter a valid option (Y/N): ")
         
 # missing docstring josh huhu
-
+# my game start can be capsuled into game() hehe
