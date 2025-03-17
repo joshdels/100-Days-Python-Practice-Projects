@@ -12,7 +12,7 @@ game_is_on = True
 
 # data name exatractor maybe a function and remove data that is not related
 def actor():
-    '''This will choose random names that is not yet in the choosen dat'''
+    '''This will choose random names that is not yet in the choosen data'''
     while True:
         current_data = random.choice(data)
         if current_data not in choosen_data:
@@ -95,6 +95,7 @@ def new_actor():
 
 # game
 def game():
+    '''This will start the whole game'''
     print(logo)
 
     current.append(actor())
@@ -106,7 +107,6 @@ def game():
         compute(name_a, follower_a, name_b, follower_b)
         print(f"Your current score: {SCORE}")
         new_actor()
-        
 
 game()
 
