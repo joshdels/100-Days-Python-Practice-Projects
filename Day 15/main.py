@@ -66,13 +66,14 @@ def process(user_money, machine_resources, user_prompt, machine_menu):
         if coffee_ingredients['water'] <= machine_resources['water'] and coffee_ingredients['milk'] <= machine_resources['milk'] and coffee_ingredients['coffee'] <= machine_resources['coffee']:
             # - transaction successful
             # - calculate change
-            change = user_money - coffee_cost
-            print(f"sucessful, here is your{user_prompt}☕, returning your change ${change}")
             
             # update resoures --- needs debugging
             machine_resources['water'] -= coffee_ingredients['water']
             machine_resources['coffee'] -= coffee_ingredients['coffee']
             machine_resources['milk'] -= coffee_ingredients['milk']
+            
+            change = user_money - coffee_cost
+            print(f"sucessful, here is your{user_prompt}☕, returning your change ${change}")
             
         else:
             # - sorry not enough, refund
