@@ -130,3 +130,6 @@ while game_is_on:
 
 # next a goal is to add interaction to the choosing
 
+# reflection, add comments then breaking down and breaking it down into moreeee chunks
+# did not listen to instruction hahha
+# then did not really break down an account into  comments and inspecting it 
