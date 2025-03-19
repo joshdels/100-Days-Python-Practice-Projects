@@ -16,7 +16,7 @@ is_choosing_coffee = True
 checking = True
 while is_choosing_coffee:
     while checking:
-        user_coffee = input(f"what is your drink print({coffee})")
+        user_coffee = input(f"what is your drink print({coffee}: )")
         if user_coffee == 'report':
             coffee_maker.report()
             money_machine.report()
@@ -34,11 +34,11 @@ while is_choosing_coffee:
         print("resources are available")
         #make payment
         money_machine.make_payment(cost_of_coffee)
+        coffee_maker.make_coffee(coffee_items)
         #compute remaining resources
         
     else:
         print("insufficint resources returning your money")
     
-
-
-# dili lagi naga bawas ang resouces??? hmmm
+#fun game ggs!
+# better read the documentation and its function need parameters
