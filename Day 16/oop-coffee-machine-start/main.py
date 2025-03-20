@@ -33,8 +33,10 @@ while is_choosing_coffee:
         # coffee_maker.make_coffee()
         print("resources are available")
         #make payment
-        money_machine.make_payment(cost_of_coffee)
-        coffee_maker.make_coffee(coffee_items)
+        if money_machine.make_payment(cost_of_coffee):
+            coffee_maker.make_coffee(coffee_items)
+        else: 
+            print("Not enough money")
         #compute remaining resources
         
     else:
