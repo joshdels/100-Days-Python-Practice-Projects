@@ -17,6 +17,7 @@ paddle2 = Paddle(390, 0)
 ball = Ball()
 ball.move_ball()
 
+
 screen.listen()
 screen.onkey(paddle1.up, "Up")
 screen.onkey(paddle1.down, "Down")
