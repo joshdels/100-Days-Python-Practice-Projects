@@ -11,6 +11,7 @@ screen.bgcolor("black")
 screen.setup(height=600, width=800)
 
 #TODO 7 Detect when paddle misses
+#TODO 8 Keep Score
 scoreboard = ScoreBoard()
 #TODO 4 Create athe ball and make it move
 ball = Ball()
@@ -45,7 +46,6 @@ elif ball.xcor() < -370 and paddle2.ycor() - 50 < ball.ycor() < paddle2.ycor() +
 #TODO 5 Detect collision with wall and bounce
 
 
-#TODO 8 Keep Score
 
 
 
