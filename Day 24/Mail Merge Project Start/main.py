@@ -23,6 +23,8 @@ with open("Input\Letters\starting_letter.txt", mode="r") as letter:
         with open(f"Output\ReadyToSend\letter_for_{name}.txt", mode="w") as letter:
             updated_context = context.replace("[name]", name)
             letter.write(updated_context)
+            
+# Very easy practice only problem is the venv
   
     
     
