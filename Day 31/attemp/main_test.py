@@ -10,11 +10,12 @@ BACKGROUND_COLOR = "#B1DDC6"
 #data source
 data = pandas.read_csv(r".\data\french_words.csv")
 to_learn = data.to_dict(orient="records")
-    
+
 current_card = {}
 words_to_learn = {}
 
 def file_inspection():
+    global words_to_learn
     #1 find to learn database
     try:
         data = pandas.read_csv(r".\data\words_to_learn.csv")
@@ -22,21 +23,44 @@ def file_inspection():
         print("No database find")
     else:
     #2 if only 3 records remain, back to original
-        words_to_learn = data.to_dict(orient="records")
-        current_card = random.choice(words_to_learn)
+        words = data.to_dict(orient="records")
+        words_to_learn.update(words)
+        print(words_to_learn)
+        
             
     #3 if there is record, show then remove if check button for update
     #4 if words to learn does not exist, use french_words.csv
-    return current_card
+def known_card():
+    next_card()
+    
+def unknown_card():
+    global words_to_learn, current_card
+    next_card() 
+    words_to_learn.update(current_card)
 
-def next_card(current_card):
-    global flip_timer
+    try:
+        data = pandas.read_csv(r".\data\words_to_learn.csv")
+    except FileNotFoundError:
+        print("No database find")
+    else:
+        new_data = pandas.DataFrame(words_to_learn)
+        new_data(r".\data\words_to_learn.csv")
+        
+        print(data)
+        print(new_data)
+    
+
+    
+
+def next_card():
+    global flip_timer, current_card
     window.after_cancel(flip_timer)
     current_card = random.choice(to_learn)  
     canvas.itemconfig(canvas_image, image=front_picture)
     canvas.itemconfig(top_word, text="french", fill="black")
     canvas.itemconfig(card_word, text = current_card["French"], fill="black")
     flip_timer = window.after(3000, func=flip_card)
+    
 
 def flip_card():
     global current_card
@@ -66,15 +90,6 @@ def find_save_file():
     #3 if there is record, show then remove if check button for update
     #4 if words to learn does not exist, use french_words.csv
 
-def draw_cards():
-    pass
-        
-    
-def known_card():
-    pass
-     
-def review_card():
-    pass
     
 
 window = Tk()
@@ -94,14 +109,15 @@ canvas.grid(column=0,row=0,columnspan=2)
 
 # buttons
 right_image = PhotoImage(file=r".\images\tama.png")
-right_button = Button(image=right_image, highlightthickness=0, command=next_card)
+right_button = Button(image=right_image, highlightthickness=0, command=known_card)
 right_button.grid(column=0, row=1)
 wrong_image = PhotoImage(file=r".\images\wrong.png")
-wrong_button = Button(image=wrong_image, highlightthickness=0, command=next_card)
+wrong_button = Button(image=wrong_image, highlightthickness=0, command=unknown_card)
 wrong_button.grid(column=2, row=1)
 
 
 next_card()
+
 
     
 
