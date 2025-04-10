@@ -73,6 +73,8 @@ if price_percentage > 10:
         )
         print("messege sent!")
         
+        print("hello")
+        
     
     
 ## STEP 1: Use https://www.alphavantage.co
