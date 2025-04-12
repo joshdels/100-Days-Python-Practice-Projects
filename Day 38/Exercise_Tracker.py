@@ -14,6 +14,8 @@ NUTRITION_API_KEY = os.environ.get('NUTRITION_API_KEY')
 NUTRITION_END_POINT = "https://trackapi.nutritionix.com/v2/natural/exercise"
 
 SHEETY_END_POINT = os.environ.get('SHEETY_END_POINT')
+SHEETY_TOKEN = os.environ.get('SHEETY_TOKEN')
+print(SHEETY_TOKEN)
 
 
 headers = {
@@ -41,7 +43,10 @@ for exercise in data["exercises"]:
         }
     }
 
-sheety_response = requests.post(url=SHEETY_END_POINT, json=sheety_params)
+bearer_headers = {
+    "Authorization": f"Bearer {SHEETY_TOKEN}" 
+}
+sheety_response = requests.post(url=SHEETY_END_POINT, json=sheety_params, headers=bearer_headers)
 print(sheety_response.text)
 
 
