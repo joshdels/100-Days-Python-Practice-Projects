@@ -16,11 +16,19 @@ class FlightSearch:
         self.header = {
             "Content-Type": "application/x-www-form-urlencoded"
         }
+        
     def get_token(self):
         '''Returns the access token'''
-        response = requests.post(url=self.flight_endpoint, headers=self.header, data=self.data)
-        data = response.json()
-        access_token = data["access_token"]
+
+        try:
+            response = requests.post(url=self.flight_endpoint, headers=self.header, data=self.data)
+            response.raise_for_status()
+        except requests.exceptions.RequestException as e:
+            print(f"Reqest failed for amadeaus! reasons {e}")
+            print(response.text)
+        else:
+            data = response.json()
+            access_token = data["access_token"]
         
         return access_token
     
@@ -36,7 +44,6 @@ class FlightSearch:
         response = requests.get(url="https://test.api.amadeus.com/v1/reference-data/locations/cities", params=self.parameters, headers=self.authorize_header)
         retrieved_data = response.json()
         iata_code = retrieved_data["data"][0]['iataCode']
-        print(iata_code)
         
         return iata_code
     
