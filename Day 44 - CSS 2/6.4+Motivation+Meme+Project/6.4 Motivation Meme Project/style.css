@@ -1,0 +1,26 @@
+html {
+    background-color: black;
+}
+
+.Motivation {
+    margin: 20px 20px 20px 20px
+}
+
+.image {
+    border: 10px white solid;
+}
+
+h1{
+    color: white;
+    text-align: center;
+    font-weight: bold;
+    font-family: "Libre Baskerville", sherif;
+    font-size: 50px;
+}
+
+h3 {
+    color: white;
+    text-align: center;
+    font-weight: normal;
+    font-family: "Libre Baskerville", sherif;
+}
