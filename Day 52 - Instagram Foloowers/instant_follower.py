@@ -1,6 +1,7 @@
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
+from selenium.common.exceptions import ElementClickInterceptedException
 import time
 
 class InstaFollower:
@@ -24,25 +25,33 @@ class InstaFollower:
         if save_login_prompt:
             save_login_prompt.click()
             
-        
-        
     def find_followers(self, url):
         # change url
         time.sleep(2) 
         self.driver.get(url)
         
-        # time to debug
         time.sleep(5)
-        followers = self.driver.find_element(By.XPATH, value='//*[@id="mount_0_0_kf"]/div/div/div[2]/div/div/div[1]/div[2]/div/div[1]/section/main/div/header/section[3]/ul/li[2]/div/a/span')
-        followers.click()
+        chefsteps_follower = self.driver.find_element(By.CSS_SELECTOR, f'ul li div a[href="/chefsteps/followers/"]')
+        chefsteps_follower.click()
         
-        # scroll = self.driver.find_element(By.XPATH, value='/html/body/div[4]/div[2]/div/div/div[1]/div/div[2]/div/div/div/div/div[2]/div/div/div[3]')
-        # scroll.send_keys(Keys.END)
-        # time.sleep(2)
-        # following = self.driver.find_elements(By.XPATH, value='//*[@id="mount_0_0_5P"]/div/div/div[2]/div/div/div[1]/div[1]/div[1]/section/main/div[2]/div[1]/div')
-        # for n in range(following):
-        #     print(following[n].get_attribute("button"))
+        time.sleep(2)
+        followers = self.driver.find_elements(By.XPATH, value='/html/body/div[4]/div[2]/div/div/div[1]/div/div[2]/div/div/div/div/div[2]/div/div/div[3]')
         
+        for i in range(10):
+            self.driver.execute_script("arguments[0].scrollTop = arguments[0].scrollHeight", followers)
+            time.sleep(2)
+        
+    def following(self):
+        all_button = self.driver.find_elements(By.XPATH, value='/html/body/div[4]/div[2]/div/div/div[1]/div/div[2]/div/div/div/div/div[2]/div/div/div[3]/div[1]/div/div[1]/div/div/div/div[3]/div/button')    
+        
+        for button in all_button:
+            try:
+                button.click()
+                time.sleep(2)
+            except ElementClickInterceptedException:
+                cancel_button = self.driver.find_element(By.XPATH, value="//button[contains(text(), 'Cancel)]")
+                cancel_button.click()
+    
  
         
     
