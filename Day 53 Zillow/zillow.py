@@ -8,10 +8,10 @@ website = response.text
 
 
 soup = BeautifulSoup(website, "html.parser")
-card = soup.find_all("a")
+card = soup.find_all("ul")
 
 for n in card:
-    print(n.get_text())
+    print(n.select("li div div div article div a")) # ganna check saon pag retrieved ani na like
 
 
 # class Zillow:
