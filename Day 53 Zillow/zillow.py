@@ -8,8 +8,10 @@ website = response.text
 
 
 soup = BeautifulSoup(website, "html.parser")
-card = soup.css.select(".StyledPropertyCardDataWrapper")
-print(card)
+card = soup.find_all("a")
+
+for n in card:
+    print(n.get_text())
 
 
 # class Zillow:
