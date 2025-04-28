@@ -1,5 +1,6 @@
 import requests
 from bs4 import BeautifulSoup
+import re
 
 
 url = 'https://appbrewery.github.io/Zillow-Clone/'
@@ -8,30 +9,50 @@ website = response.text
 
 
 soup = BeautifulSoup(website, "html.parser")
-card = soup.find_all("ul")
+price = soup.select(".List-c11n-8-84-3-photo-cards li div div article div div div div span")
 
-for n in card:
-    print(n.select("li div div div article div a")) # ganna check saon pag retrieved ani na like
+# this is for getting the price, needs cleaning
+price_list = []
+for n in price:
+    price_list.append(n.get_text().strip())
+    
 
 
-# class Zillow:
-#     def __init__(self):
-#         '''gets link text in Zillow'''
-#         self.zillow_url = 'https://appbrewery.github.io/Zillow-Clone/'
-#         self.response = requests.get(url=self.zillow_url)
-#         self.website = self.response.text
-        
-#     def get_appartments(self):
-#         '''Returns the list of appartments within the criteria'''
-#         soup = BeautifulSoup(self.website, "html.parser")
-#         # extract list len
-#         appartments = soup.find_all(name="ul", class_="List-c11n-8-84-3-photo-cards")
-        
-#         print(len(appartments))
-#         for n in appartments:
-#             print(n.get_text())      
 
+address = soup.select(".List-c11n-8-84-3-photo-cards li div div article div div a address")
+
+# address not yet!
+address_list = []
+for n in address_list:
+    address_list.append(n.get_text())
+    
+
+
+# link done
+link = soup.select(".List-c11n-8-84-3-photo-cards li div div article div div a")
+link_list = []
+for n in link:
+    link_list.append(n['href'])
+    
+    
+# print(price_list) 
+print(address_list)
+print(link_list)
+
+
+
+
+                    
+
+
+    
+
+#TODO 1 Create a list of prices
+#TODO 2 Create a list of links
+#TODO 3 Create a list of address
 
 
 #NOTE 
 # go for functionality before going to oops!
+
+# Clean up the address data as well. Remove any newlines, pipe symbols |, and unnecessary whitespace.
