@@ -1,43 +1,37 @@
 import requests
 from bs4 import BeautifulSoup
-import re
-
-
-url = 'https://appbrewery.github.io/Zillow-Clone/'
-response = requests.get(url=url)
-website = response.text
-
-
-soup = BeautifulSoup(website, "html.parser")
-price = soup.select(".List-c11n-8-84-3-photo-cards li div div article div div div div span")
-
-# this is for getting the price, needs cleaning
-price_list = []
-for n in price:
-    price_list.append(n.get_text().strip())
     
-
-
-
-address = soup.select(".List-c11n-8-84-3-photo-cards li div div article div div a address")
-
-# address not yet!
-address_list = []
-for n in address_list:
-    address_list.append(n.get_text())
+class Zillow:
+    def __init__(self):
+        url = 'https://appbrewery.github.io/Zillow-Clone/'
+        response = requests.get(url)
+        self.website = response.text
+        self.soup = BeautifulSoup(self.website, "html.parser")
+        
+        self.price_list = []
+        self.address_list = []
+        self.link_list = []
     
-
-
-# link done
-link = soup.select(".List-c11n-8-84-3-photo-cards li div div article div div a")
-link_list = []
-for n in link:
-    link_list.append(n['href'])
+    def get_data(self):
+        '''Gets the data from zillow.com'''
+        #price
+        price = self.soup.select(".List-c11n-8-84-3-photo-cards li div div article div div div div span")
+        for n in price:
+            self.price_list.append(n.get_text().replace("/mo", "").split("+")[0])
+            
+        #address
+        address = self.soup.select(".List-c11n-8-84-3-photo-cards li div div article div div a address")
+        for n in address:
+            self.address_list.append(n.get_text().replace(" | ", " ").strip())
+        
+        #link
+        link = self.soup.select(".List-c11n-8-84-3-photo-cards li div div article div div a")
+        for n in link:
+            self.link_list.append(n['href'])
+        
+        
     
     
-# print(price_list) 
-print(address_list)
-print(link_list)
 
 
 

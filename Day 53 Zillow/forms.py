@@ -15,16 +15,20 @@ class Forms:
         self.driver.get(self.url)
 
 
-    def insert_info(self):
+    def insert_info(self, property, price, link):
         '''writes the data to the google form'''
+        time.sleep(1)
         self.property = self.driver.find_element(By.XPATH, value='//*[@id="mG61Hd"]/div[2]/div/div[2]/div[1]/div/div/div[2]/div/div[1]/div/div[1]/input')
-        self.property.send_keys("property test", Keys.ENTER)
+        self.property.send_keys(property, Keys.ENTER)
         
         self.price = self.driver.find_element(By.XPATH, value='//*[@id="mG61Hd"]/div[2]/div/div[2]/div[2]/div/div/div[2]/div/div[1]/div/div[1]/input')
-        self.price.send_keys("price test", Keys.ENTER)
+        self.price.send_keys(price, Keys.ENTER)
         
         self.link = self.driver.find_element(By.XPATH, value='//*[@id="mG61Hd"]/div[2]/div/div[2]/div[3]/div/div/div[2]/div/div[1]/div/div[1]/input')
-        self.link.send_keys("link test", Keys.ENTER)
+        self.link.send_keys(link, Keys.ENTER)
         
         self.submit = self.driver.find_element(By.XPATH, value = '//*[@id="mG61Hd"]/div[2]/div/div[3]/div[1]/div[1]/div')
         self.submit.click()
+        
+        self.new_form = self.driver.find_element(By.XPATH, value='/html/body/div[1]/div[2]/div[1]/div/div[4]/a')
+        self.new_form.click()
