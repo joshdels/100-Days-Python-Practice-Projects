@@ -1,5 +1,5 @@
 import os
-os.chdir(r"C:\Users\deleo\OneDrive\Documents\GitHub\100-Days-Python-Practice-Projects\Day 31\attemp")
+# os.chdir(r"C:\Users\deleo\OneDrive\Documents\GitHub\100-Days-Python-Practice-Projects\Day 31\attemp")
 from tkinter import *
 import pandas
 import random
