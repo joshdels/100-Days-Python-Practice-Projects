@@ -11,8 +11,8 @@ all_post = response.json()
 name = "Joshua De Leon"
 
 # Email and password
-my_email = os.environ.get('MY_EMAIL')
-my_pass = os.environ.get('MY_PASS')
+my_email = os.environ.get('MY_TEST_EMAIL')
+my_pass = os.environ.get('TEST_PASSWORD')
 
 @app.route("/")
 def home():
@@ -22,25 +22,32 @@ def home():
 def about():
     return render_template('about.html')
 
-@app.route("/contact")
+
+@app.route("/contact", methods=['GET','POST'])
 def contact():
-    return render_template('contact.html')
+    if request.method == "POST":
+        # Getting the Post Section
+        name = request.form['name']
+        email = request.form['email']
+        phone = request.form['phone']
+        message = request.form['message']
+        
+        #Sending an Email
+        with smtplib.SMTP("smtp.gmail.com", port=587) as connection:
+            connection.starttls()
+            connection.login(
+                user=my_email, 
+                password=my_pass
+            )
+            connection.sendmail(
+                from_addr=my_email,
+                to_addrs=my_email,
+                msg=f"Subject:New Message\n\n Name: {name}\nEmail: {email}\nPhone: {phone}\nMessage: {message}"
+            )
+        return render_template("contact.html", msg_sent=True)
+    return render_template('contact.html', msg_sent=False)
 
-@app.route("/message")
-def send_data():
-    name = request.form['name']
-    email = request.form['email']
-    phone = request.form['phone']
-    message = request.form['message']
 
-    print(name)
-    return f"<h1> {name} {email} {phone} {message}"
-
-    # with smtplib.SMTP() as connection:
-    #     connection.starttls()
-    #     connection.send_message(
-
-    #     )
 
 @app.route("/post.html/<int:post_id>")
 def get_post(post_id):
