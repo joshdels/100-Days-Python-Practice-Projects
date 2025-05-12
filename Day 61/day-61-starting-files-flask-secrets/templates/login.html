@@ -1,25 +1,11 @@
-<!DOCTYPE HTML>
+{% extends "base.html" %}
+{% from 'bootstrap5/form.html' import render_form %}
+{% block title %}Login{% endblock %}
+{% block content %}
 
-<html>
-	<head>
-		<title>Login</title>
-	</head>
-	<body>
-        <div class="container">
-			<h1>Login</h1>
-			<!-- This is where our form will go form.csrf_token handels app key. -->
-			<form method="POST" action="{{ url_for('login') }}">
-				{{ form.csrf_token}}
-				<p>
-				{{ form.email.label }} <br> {{ form.email(size=20) }}
-				</p>
-				<p>
-				{{ form.password.label }} <br> {{ form.password(size=20) }}	
-				</p>
-				<p>
-				{{ form.submit }}
-				</p>
-			</form>
-        </div>
-	</body>
-</html>
+    <div class="container">
+        <h1>Login</h1>
+            {{ render_form(form) }}
+    </div>
+
+{% endblock %}
