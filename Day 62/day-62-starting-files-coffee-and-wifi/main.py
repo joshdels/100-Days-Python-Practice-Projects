@@ -1,7 +1,7 @@
 from flask import Flask, render_template
 from flask_bootstrap import Bootstrap
 from flask_wtf import FlaskForm
-from wtforms import StringField, SubmitField
+from wtforms import StringField, SubmitField, SelectField
 from wtforms.validators import DataRequired
 import csv
 
@@ -25,6 +25,12 @@ Bootstrap(app)
 
 class CafeForm(FlaskForm):
     cafe = StringField('Cafe name', validators=[DataRequired()])
+    location = StringField('Location URL', validators=[DataRequired()])
+    open_time = StringField('Open Time', validators=[DataRequired()])
+    open_time = StringField('Closing Time', validators=[DataRequired()])
+    coffee_rating = SelectField('Coffee Rating', choices=['☕', '☕☕', '☕☕☕', '☕☕☕☕', '☕☕☕☕☕'] )
+    wifi_rating = SelectField('Wifi Rating', choices=['✖','💪','💪💪','💪💪💪','💪💪💪💪','💪💪💪💪💪'])
+    power_outlet = SelectField('Power Outlet Rating Fields', choices=['✖','🔌','🔌🔌', '🔌🔌🔌','🔌🔌🔌🔌','🔌🔌🔌🔌🔌',])
     submit = SubmitField('Submit')
 
 # Exercise:
@@ -55,7 +61,7 @@ def add_cafe():
 
 @app.route('/cafes')
 def cafes():
-    with open('cafe-data.csv', newline='', encoding='utf-8') as csv_file:
+    with open('Day 62/day-62-starting-files-coffee-and-wifi/cafe-data.csv', newline='', encoding='utf-8') as csv_file:
         csv_data = csv.reader(csv_file, delimiter=',')
         list_of_rows = []
         for row in csv_data:
