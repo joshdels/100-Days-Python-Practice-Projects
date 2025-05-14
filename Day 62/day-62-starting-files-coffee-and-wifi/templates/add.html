@@ -12,7 +12,7 @@
       <h1>Add a new cafe into the database</h1>
 
       <!-- This is where your WTForm will go -->
-       {{ render_form(form) }}
+       {{ render_form(form, novalidate=True) }}
 
 	  <p class="space-above"><a href="{{ url_for('home') }}">See all cafes</a></p>
 
