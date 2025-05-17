@@ -1,6 +1,4 @@
 from flask import Flask, render_template, request, redirect, url_for
-from flask_wtf import FlaskForm
-from wtforms.validators import DataRequired
 
 app = Flask(__name__)
 
@@ -23,6 +21,7 @@ def add():
         return redirect(url_for('home'))
    
     return render_template('add.html') 
+
 
 
 if __name__ == "__main__":
