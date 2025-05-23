@@ -6,8 +6,6 @@ from sqlalchemy import Integer, String, Float
 
 app = Flask(__name__)
 
-all_books = []
-
 class Base(DeclarativeBase):
     pass
 
@@ -23,26 +21,52 @@ class Book(db.Model):
 
 with app.app_context():
     db.create_all()
-
+    
 @app.route('/')
 def home():
+    all_books = db.session.query(Book).all()
     return render_template('index.html', books=all_books)
 
 
+    
 @app.route("/add", methods=['GET', 'POST'])
 def add():
     if request.method == 'POST': 
-        name = request.form['name'] 
+        title = request.form['name'] 
         author = request.form['author'] 
-        rating = request.form['rating'] 
-        all_books.append({"title":name, "author":author, "rating":rating})
+        review = request.form['rating'] 
         
-        new_book = Book(title=s)
+        new_book = Book(title=title, author=author, review=review)
         with app.app_context():
-            db.session.add()
+            db.session.add(new_book)
+            db.session.commit()
+            
         return redirect(url_for('home'))
-   
     return render_template('add.html') 
+
+@app.route("/edit/<int:id>", methods=['GET', 'POST'])
+def edit(id): 
+    all_books = db.session.query(Book).all()
+    
+    if request.method == 'POST':
+        change_review = request.form['review'] 
+        
+        book_to_update = db.session.execute(db.select(Book).where(Book.id == id)).scalar()
+        book_to_update.review = change_review
+        db.session.commit()
+        return redirect(url_for('home'))
+        
+    return render_template('rating.html', id=id, books=all_books)
+
+@app.route('/delete/<int:id>', methods=['POST'])
+def delete(id):
+    book_to_delete = db.session.execute(db.select(Book).where(Book.id == id)).scalar()
+    
+    if book_to_delete:
+        db.session.delete(book_to_delete)
+        db.session.commit()
+        
+    return render_template('index.html')
 
 
 if __name__ == "__main__":
@@ -51,4 +75,4 @@ if __name__ == "__main__":
 
 # NOTE
 # read the document rather than stack over flow or chatgpt, try to read for few minutes before going deep
-
+# i have to breakdown and practice some specifics

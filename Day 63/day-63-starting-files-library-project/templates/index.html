@@ -8,11 +8,19 @@
     <h1>My Library</h1>
     <ul>
       {% for book in books%}
-      <li> {{ book['title'] }} - {{ book['author'] }} - {{ book['rating'] }} </li>
+      11 this is the bug need to fix<form action="{{ url_for('delete', id = book.id) }}" method="POST"><a href="">delete</a></form>
+      <li>
+        {{ book.title }} - {{ book.author }} - {{ book.review }}/10  
+        <a href="{{ url_for('edit', id =book.id) }}">Edit Rating</a> 
+     </li>
       {% endfor %}
-      
     </ul>
+    {% if books.length == 0 %}
+      <p>Library is empty</p>
+    {% endif %}
 
     <a href= {{ url_for('add') }} >Add New Book</a>
   </body>
 </html>
+
+<!-- add delete very sleepy na first attemp muna -->
