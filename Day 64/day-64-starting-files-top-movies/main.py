@@ -7,8 +7,10 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField, FloatField
 from wtforms.validators import DataRequired
 import requests
+import os
 
-
+Movie_API = os.environ.get("MOVIE_API")
+potential_movies = []
 
 app = Flask(__name__)
 Bootstrap5(app)
@@ -21,12 +23,15 @@ class EditForm(FlaskForm):
     review = StringField('Review', validators=[DataRequired()])
     submit = SubmitField('Done') 
     
+class AddMovie(FlaskForm):
+    title = StringField('Movie Title')
+    submit = SubmitField('Add Movie') 
+    
 class Base(DeclarativeBase):
     pass
 
 db = SQLAlchemy(model_class = Base)
 db.init_app(app)
-
 
 # CREATE DB
 class Movies(db.Model):
@@ -84,6 +89,63 @@ def delete(id):
     db.session.commit()
     
     return redirect(url_for('home'))
+
+@app.route("/add", methods=["GET", "POST"])
+def add():
+    form = AddMovie()
+    if form.validate_on_submit():
+        search = form.title.data
+        
+        # Get the data
+        headers = {
+        "accept": "application/json",
+            'Authorization': f"Bearer {Movie_API}"
+        }
+
+        params = {
+        "query": search
+        }
+        response = requests.get(
+            url="https://api.themoviedb.org/3/search/movie",
+            params = params,
+        headers=headers
+        )
+
+        data = response.json()
+        
+        for row in data['results']:  
+            id = row['id']
+            title = row['title']
+            date = row['release_date']
+            
+            potential_movies.append({'id': id, 'title':title, 'date':date})   
+            
+        print(potential_movies)
+        return render_template('select.html', movies=potential_movies)
+    
+    return render_template("add.html", form=form)
+    
+# @app.route("/add/<int:id>") # fix add data tomorrow
+# def addMovie(id):
+#     # getting data of selected
+#     url = f"https://api.themoviedb.org/3/movie/{id}"
+
+#     headers = {
+#         "accept": "application/json",
+#         "Authorization": f"Bearer {Movie_API}"
+#     }
+
+#     response = requests.get(url, headers=headers)
+
+#     # print(response.text)
+#     data = response.json()
+
+#     title = data['original_title']
+#     img_url = f"https://image.tmdb.org/t/p/w500/{data['poster_path']}"
+#     year = data['release_date'].split("-")[0]
+#     description = data['overview']
+        
+#     return render_template("add.html")
 
 if __name__ == '__main__':
     app.run(debug=True)

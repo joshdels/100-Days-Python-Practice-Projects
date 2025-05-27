@@ -5,9 +5,11 @@
 {% block content %}
 <div class="container">
     <h1 class="heading">Select Movie</h1>
+  {% for row in movies %}
   <p>
-    <a href="#"> MOVIE TITLE - MOVIE RELEASE DATE</a>
+    <a href="{{url_for('home')}}"> {{row.title}} - {{row.date}}</a>
   </p>
+  {% endfor %}
 
 </div>
 {% endblock %}
