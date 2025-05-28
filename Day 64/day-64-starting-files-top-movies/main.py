@@ -10,7 +10,7 @@ import requests
 import os
 
 Movie_API = os.environ.get("MOVIE_API")
-potential_movies = []
+
 
 app = Flask(__name__)
 Bootstrap5(app)
@@ -39,36 +39,27 @@ class Movies(db.Model):
     title: Mapped[str] = mapped_column(String(250), unique=True)
     year: Mapped[int] = mapped_column(Integer)
     description: Mapped[str] = mapped_column(String(250))
-    rating: Mapped[float] = mapped_column(Float)
-    ranking: Mapped[int] = mapped_column(Integer)
-    review: Mapped[str] = mapped_column(String(250))
-    img_url: Mapped[str] = mapped_column(String(250), nullable=True)
+    rating: Mapped[float] = mapped_column(Float, nullable=True)
+    ranking: Mapped[int] = mapped_column(Integer, nullable=True)
+    review: Mapped[str] = mapped_column(String(250), nullable=True)
+    img_url: Mapped[str] = mapped_column(String(250))
+    
 
 # CREATE TABLE
 with app.app_context():
     db.create_all()
-
-# # ADD Data for test
-#     second_movie = Movies(
-#         title="China Wars",
-#         year=1950,
-#         description="War on china is devastitating",
-#         rating=5.3,
-#         ranking=3,
-#         review="Hmmm mid tier.",
-#         img_url="https://i0.wp.com/asiatimes.com/wp-content/uploads/2020/05/China-War-Propaganda-Poster.jpg?fit=1400%2C900"
-#     )
-    
-#     db.session.add(second_movie)
-#     db.session.commit()
-    
+  
 @app.route("/")
 def home():
     # all_movies = db.session.query(Movies).all() --> tinapulan, pero same gihapon 
-    result = db.session.execute(db.select(Movies))
+    result = db.session.execute(db.select(Movies).order_by(Movies.rating))
     all_movies = result.scalars().all()
-    
-    return render_template("index.html", movies = all_movies)
+
+    for i in range(len(all_movies)):
+        all_movies[i].ranking = len(all_movies) - i
+    db.session.commit()
+                 
+    return render_template("index.html", movies=all_movies)
 
 @app.route("/edit/<int:id>", methods=["GET", "POST"])
 def edit(id):
@@ -92,7 +83,9 @@ def delete(id):
 
 @app.route("/add", methods=["GET", "POST"])
 def add():
+    potential_movies = []
     form = AddMovie()
+    
     if form.validate_on_submit():
         search = form.title.data
         
@@ -125,27 +118,39 @@ def add():
     
     return render_template("add.html", form=form)
     
-# @app.route("/add/<int:id>") # fix add data tomorrow
-# def addMovie(id):
-#     # getting data of selected
-#     url = f"https://api.themoviedb.org/3/movie/{id}"
+@app.route("/select/<int:id>") # fix add data tomorrow
+def select(id):
+    # getting data of selected
+    url = f"https://api.themoviedb.org/3/movie/{id}"
 
-#     headers = {
-#         "accept": "application/json",
-#         "Authorization": f"Bearer {Movie_API}"
-#     }
+    headers = {
+        "accept": "application/json",
+        "Authorization": f"Bearer {Movie_API}"
+    }
 
-#     response = requests.get(url, headers=headers)
+    response = requests.get(url, headers=headers)
 
-#     # print(response.text)
-#     data = response.json()
+    # print(response.text)
+    data = response.json()
 
-#     title = data['original_title']
-#     img_url = f"https://image.tmdb.org/t/p/w500/{data['poster_path']}"
-#     year = data['release_date'].split("-")[0]
-#     description = data['overview']
+    title = data['original_title']
+    img_url = f"https://image.tmdb.org/t/p/w500/{data['poster_path']}"
+    year = data['release_date'].split("-")[0]
+    description = data['overview']
+    
+    movie = Movies(
+        title=title,
+        year=year,
+        description=description,
+        img_url=img_url
+
+    )
+    
+    db.session.add(movie)
+    db.session.commit()
+    
         
-#     return render_template("add.html")
+    return redirect(url_for('home'))   
 
 if __name__ == '__main__':
     app.run(debug=True)
