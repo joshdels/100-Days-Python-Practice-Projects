@@ -69,11 +69,65 @@ def get_all_cafe():
     return jsonify(cafe=all_cafes_list)
 
 # HTTP POST - Create Record
-
+@app.route("/search")
+def search():
+    query_location = request.args.get("loc")
+    results = db.session.execute(db.select(Cafe).where(Cafe.location == query_location))
+    all_cafes = results.scalars().all()
+    
+    if all_cafes:
+        return jsonify(cafe = [cafe.to_dict() for cafe in all_cafes])
+    else:
+        return jsonify(error=["Not Found: we dont have that location."]),404    
+    
+@app.route("/add", methods=["POST"])
+def post_new_cafe():
+    new_cafe = Cafe(
+        name=request.form.get("name"),
+        map_url=request.form.get("map_url"),
+        img_url=request.form.get("img_url"),
+        location=request.form.get("location"),
+        seats=request.form.get("seats"),
+        has_wifi=bool(request.form.get("has_wifi")),
+        has_toilet=bool(request.form.get("has_toilet")),
+        has_sockets=bool(request.form.get("has_sockets")),
+        can_take_calls=bool(request.form.get("can_take_calls")),
+        coffee_price=request.form.get("coffee_price"),
+    )
+    
+    db.session.add(new_cafe)
+    db.session.commit()
+    return jsonify(response={"Success": "Successfully added the new cafe"})
+    
 # HTTP PUT/PATCH - Update Record
-
-# HTTP DELETE - Delete Record
+@app.route("/update-price/<int:cafe_id>", methods=["PATCH"])
+def patch_update_price(cafe_id):
+    new_price = request.args.get("new_price")
+    cafe = db.session.get(Cafe, cafe_id)
+    if cafe is None:
+        return jsonify(response={"Not Found": "Sorry a cafe with that id was not found in the database"}), 404
+    cafe.coffee_price = new_price
+    db.session.commit()
+    return jsonify(response={"Success": "Successfully updated the price"}), 200
+        
+# HTTP DELETE - Delete Records
+@app.route("/report-close/<int:cafe_id>", methods=["DELETE"])
+def delete_cafe(cafe_id):
+    if request.args.get("api-key") == "TopSecretAPIKey": 
+        cafe = db.session.get(Cafe, cafe_id)
+        if cafe is None:
+            return jsonify(response={"Not Found": "Sorry a cafe with that id was not found in the database"}), 404
+        else:
+            db.session.delete(cafe)
+            db.session.commit()
+            return jsonify(response={"Success": "Remove the cafe"}), 200
+    else: 
+        return jsonify(response={"error": "Sorry, that's not allowed. Make sure you have the correct api_keys"}), 403
+    
 
 
 if __name__ == '__main__':
     app.run(debug=True)
+    
+# I got introduction in postman
+# https://.postman.co/workspace/My-Workspace~e1f434ef-5e3b-49ef-86f6-9f736f9fd2cc/collection/45527495-ea68e224-586e-424e-b45f-953880d2f955?action=share&creator=45527495
