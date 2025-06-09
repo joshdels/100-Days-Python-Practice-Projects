@@ -15,9 +15,9 @@ app.config['SECRET_KEY'] = '8BYkEfBA6O6donzWlSihBXox7C0sKR6b'
 Bootstrap5(app)
 
 # ganna check this tomorrow
-ckeditor =CKEditor(app)
+# ckeditor =CKEditor(app)
 
-ckeditor.init.app(app)
+# ckeditor.init.app(app)
     
 
 
@@ -62,10 +62,12 @@ def show_post(post_id):
 
 
 # TODO: add_new_post() to create a new blog post
-@app.route("/new-post", methods=["POST"])
+@app.route("/new-post", methods=["GET", "POST"])
 def new_post():
     
-    db.session.add()
+    # db.session.add()
+    
+    return render_template("make-post.html")
     
     
 
