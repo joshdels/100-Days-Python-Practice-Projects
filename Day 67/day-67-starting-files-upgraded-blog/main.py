@@ -52,6 +52,7 @@ def get_all_posts():
     blogs = result.scalars().all()
     posts = [blog for blog in blogs]
     return render_template("index.html", all_posts=posts)
+    #udpate
 
 # TODO: Add a route so that you can click on individual posts.
 @app.route('/show_post/<int:post_id>')
