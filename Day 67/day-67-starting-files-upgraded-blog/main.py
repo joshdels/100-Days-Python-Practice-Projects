@@ -14,21 +14,27 @@ app = Flask(__name__)
 app.config['SECRET_KEY'] = '8BYkEfBA6O6donzWlSihBXox7C0sKR6b'
 Bootstrap5(app)
 
-# ganna check this tomorrow
-# ckeditor =CKEditor(app)
+ckeditor = CKEditor()
+ckeditor.init_app(app)
 
 # ckeditor.init.app(app)
     
-
-
-
 # CREATE DATABASE
 class Base(DeclarativeBase):
     pass
+
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///posts.db'
 db = SQLAlchemy(model_class=Base)
 db.init_app(app)
 
+# FORMS
+class PostForm(FlaskForm):
+    title = StringField('Blog Post Title')
+    subtitle = StringField('Subtitle')
+    authors_name = StringField('Your Name')
+    background_url = StringField('Blog Image URL')
+    body = CKEditorField('Body Content') 
+    submit = SubmitField('Submit')
 
 # CONFIGURE TABLE
 class BlogPost(db.Model):
@@ -45,6 +51,7 @@ with app.app_context():
     db.create_all()
 
 
+# HOMEPAGE
 @app.route('/')
 def get_all_posts():
     # TODO: Query the database for all the posts. Convert the data to a python list
@@ -65,12 +72,27 @@ def show_post(post_id):
 # TODO: add_new_post() to create a new blog post
 @app.route("/new-post", methods=["GET", "POST"])
 def new_post():
+    form = PostForm()
+    if form.validate_on_submit():
+        new_post = BlogPost(
+            title = form.title.data,
+            subtitle = form.subtitle.data,
+            author = form.authors_name.data,
+            img_url = form.background_url.data,
+            body = form.body.data,
+            date=date.today().strftime("%B %d, %Y")
+        )
+        
+        db.session.add(new_post)  
+        db.session.commit()
+        return redirect(url_for('get_all_posts'))
     
-    # db.session.add()
-    
-    return render_template("make-post.html")
+    return render_template("make-post.html", form=form)
     
     
+
+
+
 
 # TODO: edit_post() to change an existing blog post
 

@@ -25,6 +25,30 @@
     <div class="row">
       <div class="col-lg-8 col-md-10 mx-auto">
         <!-- TODO:-Add CKEditor and render the form here -->
+        <form method="POST" action="{{ url_for('new_post') }}">
+            {{ form.hidden_tag() }}  {# Needed for CSRF token #}
+            {{ form.title.label }}<br>
+            {{ form.title(class="form-control") }}
+
+            {{ form.subtitle.label }}<br>
+            {{ form.subtitle(class="form-control") }}
+
+            {{ form.authors_name.label }}<br>
+            {{ form.authors_name(class="form-control") }}
+
+            {{ form.background_url.label }}<br>
+            {{ form.background_url(class="form-control") }}
+
+            {{ form.body.label }}<br>
+            {{ form.body(class="form-control") }}
+
+            {{ form.submit(class="btn btn-primary") }}
+            
+        </form>
+
+        {{ ckeditor.load() }}
+        {{ ckeditor.config(name='body') }}
+
       </div>
     </div>
   </div>
