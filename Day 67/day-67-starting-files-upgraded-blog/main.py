@@ -70,7 +70,7 @@ def show_post(post_id):
 
 
 # TODO: add_new_post() to create a new blog post
-@app.route("/new-post", methods=["GET", "POST"])
+@app.route("/new_post", methods=["GET", "POST"])
 def new_post():
     form = PostForm()
     if form.validate_on_submit():
@@ -91,10 +91,10 @@ def new_post():
     
     
 
-
-
-
 # TODO: edit_post() to change an existing blog post
+@app.route("/edit", methods=["GET", "POST"])
+def edit_post():
+    pass
 
 # TODO: delete_post() to remove a blog post from the database
 
