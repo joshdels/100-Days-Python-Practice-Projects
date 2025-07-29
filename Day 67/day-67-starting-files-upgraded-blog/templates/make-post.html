@@ -10,8 +10,8 @@
       <div class="col-md-10 col-lg-8 col-xl-7">
         <div class="page-heading">
           <!-- TODO: Show a different h1 if editing existing post -->
-          {% if %}
-
+          {% if is_edit %}
+            <h1>Edit Post</h1>
           {% else %}
             <h1>New Post</h1>
           {% endif %}
@@ -29,7 +29,13 @@
     <div class="row">
       <div class="col-lg-8 col-md-10 mx-auto">
         <!-- TODO:-Add CKEditor and render the form here -->
-        <form method="POST" action="{{ url_for('new_post') }}">
+        
+        {% if is_edit %}
+          <form method="POST" action="{{ url_for('edit_post', post_id=post.id) }}">
+        {% else %}
+           <form method="POST" action="{{ url_for('new_post') }}">
+        {% endif %}
+        
             {{ form.hidden_tag() }}  {# Needed for CSRF token #}
             {{ form.title.label }}<br>
             {{ form.title(class="form-control") }}
