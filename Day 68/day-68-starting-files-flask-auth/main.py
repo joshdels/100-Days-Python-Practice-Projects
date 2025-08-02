@@ -4,6 +4,7 @@ from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
 from sqlalchemy import Integer, String
 from flask_login import UserMixin, login_user, LoginManager, login_required, current_user, logout_user
+from flask import session
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'secret-key-goes-here'
@@ -35,11 +36,20 @@ with app.app_context():
 
 @app.route('/')
 def home():
+
+    
     return render_template("index.html")
 
 
 @app.route('/register')
 def register():
+    if request.methods == 'POST':
+        new_user = User(
+            name=request.get('name').data,
+            email=request.get('email').data,
+            password=request.get('password').data
+        )
+        return redirect(url_for('secrets'))
     
     return render_template("register.html")
 
@@ -51,7 +61,8 @@ def login():
 
 @app.route('/secrets')
 def secrets():
-    return render_template("secrets.html")
+    name = session.get('name')
+    return render_template("secrets.html", name)
 
 
 @app.route('/logout')
